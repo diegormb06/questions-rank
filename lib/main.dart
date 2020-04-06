@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:questions_rank/ResponseButton.dart';
+import 'package:questions_rank/questionText.dart';
 
 main() => runApp(new QuestionApp());
 
-class QuestionApp extends StatelessWidget {
-  var questionIndex = 0;
+class _QuestionAppState extends State<QuestionApp> {
+  var _questionIndex = 0;
   final questions = [
     'What is your favorite color',
     'What is your favorite pet',
     'What is your favorite color',
   ];
 
-  void responseQuestion() {
-    questionIndex++;
-    print('pergunta $questionIndex');
+  void _responseQuestion() {
+    setState(() {
+      _questionIndex++;
+    });
+    print('pergunta $_questionIndex');
   }
 
   Widget build(BuildContext context) {
@@ -23,22 +27,19 @@ class QuestionApp extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            Text(questions[questionIndex]),
-            RaisedButton(
-              child: Text('Response 1'),
-              onPressed: responseQuestion,
-            ),
-            RaisedButton(
-              child: Text('Response 2'),
-              onPressed: responseQuestion,
-            ),
-            RaisedButton(
-              child: Text('Response 3'),
-              onPressed: responseQuestion,
-            ),
+            QuestionText(questions[_questionIndex]),
+            ResponseButton('Resposta 1', _responseQuestion),
+            ResponseButton('Resposta 2', _responseQuestion),
+            ResponseButton('Resposta 3', _responseQuestion),
           ],
         ),
       )
     );
+  }
+}
+
+class QuestionApp extends StatefulWidget {
+  _QuestionAppState createState() {
+    return _QuestionAppState();
   }
 }
