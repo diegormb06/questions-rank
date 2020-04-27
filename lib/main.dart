@@ -1,38 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:questions_rank/ResponseButton.dart';
-import 'package:questions_rank/questionText.dart';
+import 'package:questions_rank/Quiz.dart';
+import './Result.dart';
 
-main() => runApp(new QuestionApp());
+main() => runApp(QuestionApp());
 
 class _QuestionAppState extends State<QuestionApp> {
   var _questionIndex = 0;
-  final questions = [
-    'What is your favorite color',
-    'What is your favorite pet',
-    'What is your favorite color',
+
+  final _questions = const [
+    { 
+      'text': 'What is your favorite color',
+      'responses': ['Purpple', 'Orange', 'Red', 'Blue']
+    },
+    { 
+      'text': 'What is your favorite pet',
+      'responses': ['Dog', 'Cat', 'Lion', 'Owl']
+    },
+    { 
+      'text': 'What is your favorite teacher',
+      'responses': ['John', 'Mary', 'Leo', 'Diego']
+    }
   ];
 
   void _responseQuestion() {
-    setState(() {
-      _questionIndex++;
-    });
-    print('pergunta $_questionIndex');
+    if(hasQuestion) {
+      setState(() {
+        _questionIndex++;
+      });
+    }
   }
 
+  bool get hasQuestion {
+    return  _questionIndex < _questions.length;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Questions Rank'),
         ),
-        body: Column(
-          children: <Widget>[
-            QuestionText(questions[_questionIndex]),
-            ResponseButton('Resposta 1', _responseQuestion),
-            ResponseButton('Resposta 2', _responseQuestion),
-            ResponseButton('Resposta 3', _responseQuestion),
-          ],
-        ),
+        body: hasQuestion ? Quiz(
+          questions: _questions,
+          questionIndex: _questionIndex,
+          responseQuestion: _responseQuestion,
+        ) : Result()
       )
     );
   }
